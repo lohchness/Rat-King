@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://d3yb4swaosx4i"]
+
+[ext_resource type="Script" path="res://Scripts/rat_player.gd" id="1_quw4d"]
+[ext_resource type="Texture2D" uid="uid://dcekwbuixn40k" path="res://Assets/PlayerRat.png" id="2_axfmm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4jlo5"]
+radius = 49.0102
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ps03p"]
+radius = 426.264
+
+[node name="RatPlayer" type="CharacterBody2D"]
+script = ExtResource("1_quw4d")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(7, -32, -8, -32, -8, -30.5, -14.2, -18, -16.2, -18, -15, -5.8, -15, -3.2, -1, 12.8, -6, 20, -8, 20, -8, 30.8, -6.8, 32, 5.2, 32, 3, 27.5, 3, 24.7, 8.9, 18, 11, 18, 11, 9, 7.6, 6.5, 13.7, 2, 16, 2, 16, -11.5, 7, -29.5)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+rotation = 1.5708
+texture = ExtResource("2_axfmm")
+
+[node name="GrabRadius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrabRadius"]
+shape = SubResource("CircleShape2D_4jlo5")
+
+[node name="FleeRadius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FleeRadius"]
+shape = SubResource("CircleShape2D_ps03p")
+debug_color = Color(0.887164, 0.330227, 0, 0.0392157)
+
+[node name="Camera2D" type="Camera2D" parent="."]

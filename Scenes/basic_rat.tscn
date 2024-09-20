@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bbaps72ti1srw"]
+
+[ext_resource type="Texture2D" uid="uid://bagejs5mkgcra" path="res://Assets/BasicRat.png" id="1_6hiun"]
+[ext_resource type="Script" path="res://Scripts/basic_rat.gd" id="1_da03d"]
+[ext_resource type="Texture2D" uid="uid://bswxvohmqa4hg" path="res://Assets/BasicRatOutline.png" id="2_iuxcc"]
+
+[node name="BasicRat" type="CharacterBody2D"]
+script = ExtResource("1_da03d")
+
+[node name="Rat" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_6hiun")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(7, -32, -8, -32, -8, -30.5, -14.2, -18, -16.2, -18, -15, -5.8, -15, -3.2, -1, 12.8, -6, 20, -8, 20, -8, 30.8, -6.8, 32, 5.2, 32, 3, 27.5, 3, 24.7, 8.9, 18, 11, 18, 11, 9, 7.6, 6.5, 13.7, 2, 16, 2, 16, -11.5, 7, -29.5)
+
+[node name="Outline" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+texture = ExtResource("2_iuxcc")

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1xr58a84q1xx"]
+
+[ext_resource type="PackedScene" uid="uid://d3yb4swaosx4i" path="res://Scenes/RatPlayer.tscn" id="1_x55yp"]
+[ext_resource type="PackedScene" uid="uid://bbaps72ti1srw" path="res://Scenes/basic_rat.tscn" id="2_kvbgi"]
+
+[node name="Arena" type="Node2D"]
+
+[node name="RatPlayer" parent="." instance=ExtResource("1_x55yp")]
+position = Vector2(256, 252)
+
+[node name="BasicRat" parent="." instance=ExtResource("2_kvbgi")]
+position = Vector2(774, 261)
