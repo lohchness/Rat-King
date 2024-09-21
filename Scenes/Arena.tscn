@@ -1,12 +1,36 @@
-[gd_scene load_steps=3 format=3 uid="uid://d1xr58a84q1xx"]
+[gd_scene load_steps=6 format=3 uid="uid://d1xr58a84q1xx"]
 
-[ext_resource type="PackedScene" uid="uid://d3yb4swaosx4i" path="res://Scenes/RatPlayer.tscn" id="1_x55yp"]
-[ext_resource type="PackedScene" uid="uid://bbaps72ti1srw" path="res://Scenes/basic_rat.tscn" id="2_kvbgi"]
+[ext_resource type="PackedScene" uid="uid://d3yb4swaosx4i" path="res://Scenes/RatPack.tscn" id="1_x55yp"]
+[ext_resource type="PackedScene" uid="uid://divd0ce574soj" path="res://Scenes/BasicRat.tscn" id="2_deu7e"]
+[ext_resource type="Texture2D" uid="uid://dcekwbuixn40k" path="res://Assets/PlayerRat.png" id="2_tvtgx"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="3_21tpd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dsfja"]
+size = Vector2(72.5, 196)
 
 [node name="Arena" type="Node2D"]
 
-[node name="RatPlayer" parent="." instance=ExtResource("1_x55yp")]
+[node name="PlayerRatPack" parent="." instance=ExtResource("1_x55yp")]
 position = Vector2(256, 252)
+RatSkin = ExtResource("2_tvtgx")
 
-[node name="BasicRat" parent="." instance=ExtResource("2_kvbgi")]
-position = Vector2(774, 261)
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(637.75, 321)
+shape = SubResource("RectangleShape2D_dsfja")
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody2D/CollisionShape2D"]
+offset_left = -35.75
+offset_top = -98.0
+offset_right = 37.25
+offset_bottom = 99.0
+
+[node name="StateChartDebugger" parent="." instance=ExtResource("3_21tpd")]
+offset_left = 756.0
+offset_top = 59.0
+offset_right = 1129.0
+offset_bottom = 544.0
+
+[node name="BasicRat" parent="." instance=ExtResource("2_deu7e")]
+position = Vector2(521, 311)

@@ -1,0 +1,82 @@
+[gd_scene load_steps=9 format=3 uid="uid://divd0ce574soj"]
+
+[ext_resource type="Script" path="res://Scripts/basicRatAI.gd" id="2_2epjo"]
+[ext_resource type="Texture2D" uid="uid://bagejs5mkgcra" path="res://Assets/BasicRat.png" id="2_13slu"]
+[ext_resource type="Texture2D" uid="uid://bswxvohmqa4hg" path="res://Assets/BasicRatOutline.png" id="3_ajbqe"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_dssnc"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_p1n33"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="5_40rpd"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_ohcbp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ef6tc"]
+radius = 29.6142
+
+[node name="BasicRat" type="CharacterBody2D"]
+position = Vector2(30, 0)
+script = ExtResource("2_2epjo")
+
+[node name="RatSprite" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("2_13slu")
+
+[node name="Outline" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("3_ajbqe")
+
+[node name="Collision" type="CollisionPolygon2D" parent="."]
+modulate = Color(1, 1, 1, 0.278431)
+rotation = 1.5708
+polygon = PackedVector2Array(3.99988, -33, -5.00012, -33, -13, -4.99995, 0.00012308, 34, 13, -5.00005)
+
+[node name="WanderTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="GrabOtherRadius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrabOtherRadius"]
+position = Vector2(25, 0)
+shape = SubResource("CircleShape2D_ef6tc")
+debug_color = Color(0, 0.99, 0.9405, 0)
+
+[node name="GetTakenRadius" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="GetTakenRadius"]
+modulate = Color(0, 0.0666666, 1, 0.513726)
+rotation = 1.5708
+scale = Vector2(2.4693, 1.31085)
+polygon = PackedVector2Array(3.99988, -33, -5.00012, -33, -13, -4.99995, 0.00012308, 34, 13, -5.00005)
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("3_dssnc")
+track_in_editor = true
+
+[node name="Root" type="Node" parent="StateChart"]
+script = ExtResource("4_p1n33")
+initial_state = NodePath("Solo")
+
+[node name="Solo" type="Node" parent="StateChart/Root"]
+script = ExtResource("5_40rpd")
+
+[node name="On Added to Pack" type="Node" parent="StateChart/Root/Solo"]
+script = ExtResource("6_ohcbp")
+to = NodePath("../../Pack")
+event = &"added_to_pack"
+delay_in_seconds = "0.0"
+
+[node name="Pack" type="Node" parent="StateChart/Root"]
+script = ExtResource("5_40rpd")
+
+[node name="Pivot" type="Marker2D" parent="."]
+position = Vector2(-30, 0)
+
+[node name="Center" type="Marker2D" parent="."]
+
+[connection signal="timeout" from="WanderTimer" to="." method="_on_timer_timeout"]
+[connection signal="area_entered" from="GetTakenRadius" to="." method="_on_get_taken_radius_area_entered"]
+[connection signal="area_exited" from="GetTakenRadius" to="." method="_on_get_taken_radius_area_exited"]
+[connection signal="state_entered" from="StateChart/Root/Solo" to="." method="_on_solo_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/Solo" to="." method="_on_solo_state_exited"]
+[connection signal="state_physics_processing" from="StateChart/Root/Solo" to="." method="_on_solo_state_physics_processing"]
+[connection signal="state_processing" from="StateChart/Root/Solo" to="." method="_on_solo_state_processing"]
+[connection signal="state_entered" from="StateChart/Root/Pack" to="." method="_on_pack_state_entered"]
+[connection signal="state_input" from="StateChart/Root/Pack" to="." method="_on_pack_state_input"]
