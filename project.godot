@@ -22,6 +22,7 @@ enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg")
 [global_group]
 
 PlayerRat="If the rat is controlled by the player"
+EnemyRatSolo="Solo enemy rat running around"
 
 [input]
 

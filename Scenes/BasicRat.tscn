@@ -26,19 +26,23 @@ texture = ExtResource("3_ajbqe")
 [node name="Collision" type="CollisionPolygon2D" parent="."]
 modulate = Color(1, 1, 1, 0.278431)
 rotation = 1.5708
+scale = Vector2(1, 0.997461)
 polygon = PackedVector2Array(3.99988, -33, -5.00012, -33, -13, -4.99995, 0.00012308, 34, 13, -5.00005)
 
 [node name="WanderTimer" type="Timer" parent="."]
 autostart = true
 
 [node name="GrabOtherRadius" type="Area2D" parent="."]
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GrabOtherRadius"]
 position = Vector2(25, 0)
 shape = SubResource("CircleShape2D_ef6tc")
 debug_color = Color(0, 0.99, 0.9405, 0)
 
-[node name="GetTakenRadius" type="Area2D" parent="."]
+[node name="GetTakenRadius" type="Area2D" parent="." groups=["EnemyRatSolo"]]
+monitoring = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="GetTakenRadius"]
 modulate = Color(0, 0.0666666, 1, 0.513726)

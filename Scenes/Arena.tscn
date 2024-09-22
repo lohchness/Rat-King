@@ -1,36 +1,106 @@
-[gd_scene load_steps=6 format=3 uid="uid://d1xr58a84q1xx"]
+[gd_scene load_steps=7 format=3 uid="uid://d1xr58a84q1xx"]
 
 [ext_resource type="PackedScene" uid="uid://d3yb4swaosx4i" path="res://Scenes/RatPack.tscn" id="1_x55yp"]
 [ext_resource type="PackedScene" uid="uid://divd0ce574soj" path="res://Scenes/BasicRat.tscn" id="2_deu7e"]
 [ext_resource type="Texture2D" uid="uid://dcekwbuixn40k" path="res://Assets/PlayerRat.png" id="2_tvtgx"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="3_21tpd"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_dsfja"]
-size = Vector2(72.5, 196)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rquvi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8rh4m"]
 
 [node name="Arena" type="Node2D"]
 
-[node name="PlayerRatPack" parent="." instance=ExtResource("1_x55yp")]
-position = Vector2(256, 252)
-RatSkin = ExtResource("2_tvtgx")
-
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(581, 9)
+scale = Vector2(68.1666, -1.49806)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(637.75, 321)
-shape = SubResource("RectangleShape2D_dsfja")
+shape = SubResource("RectangleShape2D_rquvi")
 
 [node name="ColorRect" type="ColorRect" parent="StaticBody2D/CollisionShape2D"]
-offset_left = -35.75
-offset_top = -98.0
-offset_right = 37.25
-offset_bottom = 99.0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+metadata/_edit_use_anchors_ = true
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="."]
+position = Vector2(730, 269)
+scale = Vector2(5.32743, -3.74392)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D5"]
+shape = SubResource("RectangleShape2D_rquvi")
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody2D5/CollisionShape2D"]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+metadata/_edit_use_anchors_ = true
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="."]
+position = Vector2(575, 647)
+scale = Vector2(68.1666, -1.49806)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
+shape = SubResource("RectangleShape2D_rquvi")
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody2D4/CollisionShape2D"]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+metadata/_edit_use_anchors_ = true
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(-88, 219)
+scale = Vector2(1.13738, 2.93919)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(82, 37)
+scale = Vector2(1, 10.96)
+shape = SubResource("RectangleShape2D_8rh4m")
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody2D2/CollisionShape2D"]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+metadata/_edit_use_anchors_ = true
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+position = Vector2(1057, 214)
+scale = Vector2(1.13738, 2.93919)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+position = Vector2(82, 37)
+scale = Vector2(1, 10.96)
+shape = SubResource("RectangleShape2D_8rh4m")
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody2D3/CollisionShape2D"]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+metadata/_edit_use_anchors_ = true
 
 [node name="StateChartDebugger" parent="." instance=ExtResource("3_21tpd")]
+visible = false
 offset_left = 756.0
 offset_top = 59.0
 offset_right = 1129.0
 offset_bottom = 544.0
 
+[node name="PlayerRatPack" parent="." instance=ExtResource("1_x55yp")]
+position = Vector2(256, 252)
+RatSkin = ExtResource("2_tvtgx")
+
 [node name="BasicRat" parent="." instance=ExtResource("2_deu7e")]
-position = Vector2(521, 311)
+position = Vector2(363, 199)
+
+[node name="BasicRat2" parent="." instance=ExtResource("2_deu7e")]
+position = Vector2(296, 182)
+
+[node name="BasicRat3" parent="." instance=ExtResource("2_deu7e")]
+position = Vector2(352, 158)
