@@ -93,7 +93,7 @@ offset_right = 1129.0
 offset_bottom = 544.0
 
 [node name="PlayerRatPack" parent="." instance=ExtResource("1_x55yp")]
-position = Vector2(256, 252)
+position = Vector2(281, 432)
 RatSkin = ExtResource("2_tvtgx")
 
 [node name="BasicRat" parent="." instance=ExtResource("2_deu7e")]

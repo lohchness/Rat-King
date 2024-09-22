@@ -23,6 +23,8 @@ enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg")
 
 PlayerRat="If the rat is controlled by the player"
 EnemyRatSolo="Solo enemy rat running around"
+PlayerRatCollider="CollisionPolygon of Rats of Player"
+PlayerRatCharacterBodies="CharacterBody2Ds of Basic Rats added to Player Rat Pack"
 
 [input]
 

@@ -15,31 +15,25 @@ radius = 29.6142
 position = Vector2(30, 0)
 script = ExtResource("2_2epjo")
 
-[node name="RatSprite" type="Sprite2D" parent="."]
+[node name="Sprites" type="Node2D" parent="."]
+
+[node name="RatSprite" type="Sprite2D" parent="Sprites"]
 rotation = 1.5708
 texture = ExtResource("2_13slu")
 
-[node name="Outline" type="Sprite2D" parent="."]
+[node name="Outline" type="Sprite2D" parent="Sprites"]
 rotation = 1.5708
 texture = ExtResource("3_ajbqe")
+
+[node name="Pivot" type="Marker2D" parent="Sprites"]
+position = Vector2(-30, 0)
+
+[node name="Center" type="Marker2D" parent="Sprites"]
 
 [node name="Collision" type="CollisionPolygon2D" parent="."]
 modulate = Color(1, 1, 1, 0.278431)
 rotation = 1.5708
-scale = Vector2(1, 0.997461)
 polygon = PackedVector2Array(3.99988, -33, -5.00012, -33, -13, -4.99995, 0.00012308, 34, 13, -5.00005)
-
-[node name="WanderTimer" type="Timer" parent="."]
-autostart = true
-
-[node name="GrabOtherRadius" type="Area2D" parent="."]
-monitoring = false
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GrabOtherRadius"]
-position = Vector2(25, 0)
-shape = SubResource("CircleShape2D_ef6tc")
-debug_color = Color(0, 0.99, 0.9405, 0)
 
 [node name="GetTakenRadius" type="Area2D" parent="." groups=["EnemyRatSolo"]]
 monitoring = false
@@ -49,6 +43,15 @@ modulate = Color(0, 0.0666666, 1, 0.513726)
 rotation = 1.5708
 scale = Vector2(2.4693, 1.31085)
 polygon = PackedVector2Array(3.99988, -33, -5.00012, -33, -13, -4.99995, 0.00012308, 34, 13, -5.00005)
+
+[node name="GrabOtherRadius" type="Area2D" parent="."]
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrabOtherRadius"]
+position = Vector2(25, 0)
+shape = SubResource("CircleShape2D_ef6tc")
+debug_color = Color(0, 0.99, 0.9405, 0)
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("3_dssnc")
@@ -70,17 +73,14 @@ delay_in_seconds = "0.0"
 [node name="Pack" type="Node" parent="StateChart/Root"]
 script = ExtResource("5_40rpd")
 
-[node name="Pivot" type="Marker2D" parent="."]
-position = Vector2(-30, 0)
+[node name="WanderTimer" type="Timer" parent="."]
+autostart = true
 
-[node name="Center" type="Marker2D" parent="."]
-
-[connection signal="timeout" from="WanderTimer" to="." method="_on_timer_timeout"]
-[connection signal="area_entered" from="GetTakenRadius" to="." method="_on_get_taken_radius_area_entered"]
-[connection signal="area_exited" from="GetTakenRadius" to="." method="_on_get_taken_radius_area_exited"]
 [connection signal="state_entered" from="StateChart/Root/Solo" to="." method="_on_solo_state_entered"]
 [connection signal="state_exited" from="StateChart/Root/Solo" to="." method="_on_solo_state_exited"]
 [connection signal="state_physics_processing" from="StateChart/Root/Solo" to="." method="_on_solo_state_physics_processing"]
 [connection signal="state_processing" from="StateChart/Root/Solo" to="." method="_on_solo_state_processing"]
 [connection signal="state_entered" from="StateChart/Root/Pack" to="." method="_on_pack_state_entered"]
 [connection signal="state_input" from="StateChart/Root/Pack" to="." method="_on_pack_state_input"]
+[connection signal="state_physics_processing" from="StateChart/Root/Pack" to="." method="_on_pack_state_physics_processing"]
+[connection signal="timeout" from="WanderTimer" to="." method="_on_timer_timeout"]
