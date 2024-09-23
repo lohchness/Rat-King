@@ -4,8 +4,8 @@ class_name RatPack
 const BasicRat = preload("res://Scenes/BasicRat.tscn")
 @export var RatSkin: Texture
 
-var base_speed = 500
-var base_accel = 50
+var base_speed = 300
+var base_accel = 30
 var curr_speed
 var curr_accel
 var is_moving : bool
@@ -14,6 +14,10 @@ var is_moving : bool
 @onready var ratBodies = $BasicRatBodies
 var num_rats
 var last_rat_added: BasicRat
+
+var is_rotating = false
+var current_rotation
+var target_rotation
 
 func _ready() -> void:
 	curr_speed = base_speed
@@ -37,12 +41,13 @@ func _physics_process(delta: float) -> void:
 	
 	## Rotate based on direction
 	is_moving = velocity.length() > 0.01
-	if is_moving:
+	if is_moving and !is_rotating:
 		rotation = lerp_angle(rotation, velocity.angle(), 10 * delta)
-	
-	
-	#print_debug("Pack Center Location: " + str($CenterPivot.global_position))
-	#print(ratBodies.get_children()[0].position)
+	if is_rotating:
+		current_rotation = lerp(current_rotation, target_rotation, 5 * delta)
+		rotation = current_rotation
+		if (abs(current_rotation - target_rotation) < 1):
+			is_rotating = false
 
 ## Reparents the BasicRat and its nodes.
 ## The BasicRat CharacterBody2D will be a direct child of the RatPack.
@@ -63,6 +68,7 @@ func add_rat_to_this_pack(body: BasicRat, is_first = false):
 
 func reparent_nodes(body: BasicRat):
 	body.reparent(ratBodies)
+	#body.add_to_group("PlayerRatCharacterBodies")
 	
 	## COLLISION AND AREAS
 	var collision: CollisionPolygon2D = body.physicsCollider
@@ -73,36 +79,29 @@ func reparent_nodes(body: BasicRat):
 	## This will be put into GrabOthers Area2D to detect other rats to grab.
 	var grab_shape = body.grabOthersCollider
 	grab_shape.reparent(grabOthersAreas)
+	#grab_shape.add_to_group("PlayerRatCharacterBodies")
 
 
 func update_rat_transforms():
-	
-	# ACCESSING CHILDREN AND INDICES
-	#var rats = grabOthersAreas.get_children()
-	#var sprites = ratBodies.get_children()
-	#assert(len(sprites) == ratBodies.get_child_count())
-	#for i in range(len(rats)):
-		#sprites[i].modulate = Color(1, 1, 1, (sprites[i].get_index() + 1 / float(len(sprites))))
-	
-	## BasicRatBodies   Sprites
+	## BasicRatBodies   CharacterBody2D and Sprites
 	## GrabOthers       CollisionPolygon2Ds
 	## 
 	
 	var rat_bodies = ratBodies.get_children() ## Rat Character Bodies and Sprites
-	var rat_grab_areas = grabOthersAreas.get_children() ## Grab Colliders
-	var rat_colliders = get_tree().get_nodes_in_group("PlayerRatCollider") ## Physics Collider
+	#var rat_bodies = get_tree().get_nodes_in_group("PlayerRatCharacterBodies")
+	var rat_grab_colliders = grabOthersAreas.get_children() ## Grab Colliders
+	var rat_physics_colliders = get_tree().get_nodes_in_group("PlayerRatCollider") ## Physics Collider
 	
 	for i in range(len(rat_bodies)):
-		var pack_rotation: float = 2 * PI * i / len(rat_colliders)
-		#rat_bodies[i].pack_update_transform(pack_rotation, i)
+		var pack_rotation: float = 2 * PI * i / len(rat_physics_colliders)
 		
-		#var s = "Rat %s is at degree %s"
-		#print_debug(s % [i, rad_to_deg(pack_rotation)])
 		rat_bodies[i].global_position = position
-		rat_bodies[i].global_rotation = pack_rotation
+		rat_bodies[i].global_rotation = pack_rotation + rotation
 		
+		rat_grab_colliders[i].global_position = rat_bodies[i].grabCenter.global_position
 		
-
+		rat_physics_colliders[i].global_position = position
+		rat_physics_colliders[i].global_rotation = pack_rotation + rotation
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("space"):
@@ -114,6 +113,20 @@ func _input(event: InputEvent) -> void:
 			#add_rat_to_this_pack(bodies.pick_random())
 			bodies.sort_custom(sort_bodies_distance)
 			add_rat_to_this_pack(bodies[0])
+	
+	if event.is_action_pressed("mouse1"):
+		var dir = get_local_mouse_position()
+		current_rotation = rotation
+		target_rotation = 3 * PI * sign(dir.x)
+		is_rotating = true
+		
+
+func shoot_rat():
+	
+	pass
+
+
+########### OTHERS
 
 func sort_bodies_distance(a: Node2D, b: Node2D):
 	if a.position.distance_squared_to(self.position) < b.position.distance_squared_to(self.position):

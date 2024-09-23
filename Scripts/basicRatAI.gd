@@ -8,6 +8,7 @@ var rng = RandomNumberGenerator.new()
 @onready var physicsCollider: CollisionPolygon2D = $Collision
 @onready var grabOthersCollider: CollisionShape2D = $GrabOtherArea/CollisionShape2D
 
+@onready var grabCenter = $Sprites/GrabCenter
 @onready var grabOthersArea: Area2D = $GrabOtherArea
 @onready var getTakenArea: Area2D = $GetTakenArea
 
@@ -86,56 +87,17 @@ func exited_player_grab_radius():
 ## Which Pack this Rat belongs to
 var pack: RatPack
 
-## Transforms
-@onready var pivot = $Sprites/Pivot.position
-#@onready var base_offset = position
-@onready var base_offset = Vector2(30, 0)
-
-@onready var grab_offset = grabOthersCollider.position
-
-var base_position
-var base_rotation
-
-var target_position: Vector2 ## The position the rat should go to once added to the pack
-var target_rotation: float ## Radians
-
 func add_to_pack(body: RatPack, num: int, is_first = false):
 	pack = body
 	stateChart.send_event("added_to_pack")
-
-func set_pack_base_rotation(rad: float):
-	base_rotation = rad
 
 func _on_pack_state_entered() -> void:
 	grabOthersArea.monitoring = true
 	getTakenArea.visible = false
 
 func _on_pack_state_physics_processing(delta: float) -> void:
-	
-	#global_rotation = base_rotation
-	#global_position = pack.position - base_offset
-	
-	#sprites.global_rotation = base_rotation
-	#sprites.global_position = pack.position + base_offset
-	
 	pass # Replace with function body.
 
 ## The Sprites, CollisionShapes, and Areas have their own properties set in the editor.
 func pack_update_transform(angle: float, pack_number: int):
-	assert(pack)
-	
-	#global_rotation = pack.rotation + angle
-	
-	#sprites.global_position = pack.global_position + base_offset
-	#sprites.global_rotation = 
-	
-	#global_position = pack.position - pivot
-	
-	#set_pack_base_rotation(angle)
-	
-	#var s = "Rat %s is at degree %s"
-	#print(s % [pack_number, rad_to_deg(angle)])
-	#var p = "Rat %s is at position %s"
-	#print(p % [pack_number, sprites.global_position])
-	
 	pass

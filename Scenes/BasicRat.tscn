@@ -28,6 +28,9 @@ texture = ExtResource("3_ajbqe")
 
 [node name="Center" type="Marker2D" parent="Sprites"]
 
+[node name="GrabCenter" type="Marker2D" parent="Sprites"]
+position = Vector2(55, 0)
+
 [node name="Collision" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(-4, 0, 35, -13, 63, -5, 63, 4, 35, 13)
 
@@ -42,7 +45,6 @@ monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GrabOtherArea"]
-position = Vector2(55, 0)
 shape = SubResource("CircleShape2D_ef6tc")
 debug_color = Color(0, 0.99, 0.9405, 0)
 
