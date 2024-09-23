@@ -89,6 +89,13 @@ var pack: RatPack
 
 func add_to_pack(body: RatPack, num: int, is_first = false):
 	pack = body
+	
+	set_collision_layer_value(2, false)
+	set_collision_mask_value(1, false)
+	
+	set_collision_layer_value(1, true)
+	set_collision_mask_value(2, true)
+	
 	stateChart.send_event("added_to_pack")
 
 func _on_pack_state_entered() -> void:
@@ -101,3 +108,27 @@ func _on_pack_state_physics_processing(delta: float) -> void:
 ## The Sprites, CollisionShapes, and Areas have their own properties set in the editor.
 func pack_update_transform(angle: float, pack_number: int):
 	pass
+
+
+
+#################### PROJECTILE ##############################
+
+
+var projectile_direction
+var projectile_speed = 100
+@onready var projectileArea = $Projectile
+
+func projectile_settings(dir: Vector2):
+	projectile_direction = dir
+
+func _on_projectile_state_entered() -> void:
+	projectileArea.monitoring = true
+	print("Entered at position" + str(position))
+
+func _on_projectile_state_physics_processing(delta: float) -> void:
+	velocity = projectile_direction * projectile_speed
+	move_and_slide()
+
+func _on_projectile_body_entered(body: Node2D) -> void:
+	print("Hit something at " + str(position))
+	queue_free()

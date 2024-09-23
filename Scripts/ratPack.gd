@@ -92,8 +92,10 @@ func update_rat_transforms():
 	var rat_grab_colliders = grabOthersAreas.get_children() ## Grab Colliders
 	var rat_physics_colliders = get_tree().get_nodes_in_group("PlayerRatCollider") ## Physics Collider
 	
-	for i in range(len(rat_bodies)):
-		var pack_rotation: float = 2 * PI * i / len(rat_physics_colliders)
+	assert(num_rats == len(rat_bodies))
+	
+	for i in range(num_rats):
+		var pack_rotation: float = 2 * PI * i / num_rats
 		
 		rat_bodies[i].global_position = position
 		rat_bodies[i].global_rotation = pack_rotation + rotation
@@ -117,13 +119,49 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("mouse1"):
 		var dir = get_local_mouse_position()
 		current_rotation = rotation
-		target_rotation = 3 * PI * sign(dir.x)
+		target_rotation = 5 * PI * -sign(dir.x)
 		is_rotating = true
 		
+		shoot_rat(dir)
 
-func shoot_rat():
+
+func shoot_rat(direction: Vector2):
+	if (num_rats < 2):
+		return
+	
+	unpack_rat(direction)
+	num_rats -= 1
+	
+	update_rat_transforms()
 	
 	pass
+
+## Reparent node
+func unpack_rat(direction: Vector2):
+	var rat_bodies = ratBodies.get_children() ## Rat Character Bodies and Sprites
+	
+	## Get a random rat and send it flying
+	## Reparent and change collision layers
+	var i = randi_range(0, len(rat_bodies) - 1)
+	var rat_body: CollisionObject2D = rat_bodies[i]
+	
+	var rat_grab_collider = grabOthersAreas.get_child(i) ## Grab Colliders
+	var rat_physics_collider = get_tree().get_nodes_in_group("PlayerRatCollider")[i] ## Physics Collider
+	
+	rat_physics_collider.reparent(rat_body)
+	rat_grab_collider.reparent(rat_body.grabOthersArea)
+	rat_body.reparent(get_parent()) ## ASSUMES PACK IS A CHILD OF THE SCENE
+	
+	## It is still technically a player, but now a projectile.
+	rat_body.set_collision_layer_value(1, false) ## Not a Player Rat
+	rat_body.set_collision_mask_value(2, false) ## Cannot detect Solo Rats (change?)
+	
+	rat_body.set_collision_layer_value(7, true) ## I am a projectile
+	rat_body.set_collision_mask_value(3, true) ## I can detect Enemy Rat Pack
+	rat_body.set_collision_mask_value(6, true) ## I can detect Wall
+	
+	rat_body.projectile_settings(direction.normalized())
+	rat_body.stateChart.send_event("on_throw")
 
 
 ########### OTHERS

@@ -63,8 +63,10 @@ mouse1={
 
 2d_physics/layer_1="PlayerRatPack"
 2d_physics/layer_2="EnemyRatSolo"
+2d_physics/layer_3="EnemyRatPack"
 2d_physics/layer_5="Ground"
 2d_physics/layer_6="Wall"
+2d_physics/layer_7="Projectile"
 
 [rendering]
 

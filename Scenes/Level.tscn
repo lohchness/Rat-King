@@ -30,3 +30,9 @@ position = Vector2(455, 459)
 
 [node name="BasicRat" parent="." instance=ExtResource("3_d3p1w")]
 position = Vector2(770, 362)
+
+[node name="BasicRat2" parent="." instance=ExtResource("3_d3p1w")]
+position = Vector2(361, 202)
+
+[node name="BasicRat3" parent="." instance=ExtResource("3_d3p1w")]
+position = Vector2(1303, 304)

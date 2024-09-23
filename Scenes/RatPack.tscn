@@ -6,19 +6,22 @@
 radius = 426.264
 
 [node name="Player" type="CharacterBody2D"]
+collision_mask = 34
 script = ExtResource("1_quw4d")
 
-[node name="FleeRadius" type="Area2D" parent="."]
+[node name="FleeArea" type="Area2D" parent="."]
 visible = false
+collision_mask = 2
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FleeRadius"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FleeArea"]
 shape = SubResource("CircleShape2D_ps03p")
 debug_color = Color(0.887164, 0.330227, 0, 0.0392157)
 
 [node name="BasicRatBodies" type="Node2D" parent="."]
 
 [node name="GrabOthers" type="Area2D" parent="." groups=["PlayerRat"]]
+collision_mask = 2
 monitorable = false
 
 [node name="CenterPivot" type="Polygon2D" parent="."]

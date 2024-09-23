@@ -12,6 +12,8 @@
 radius = 30.0
 
 [node name="BasicRat" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 33
 script = ExtResource("2_2epjo")
 
 [node name="Sprites" type="Node2D" parent="."]
@@ -35,18 +37,34 @@ position = Vector2(55, 0)
 polygon = PackedVector2Array(-4, 0, 35, -13, 63, -5, 63, 4, 35, 13)
 
 [node name="GetTakenArea" type="Area2D" parent="." groups=["EnemyRatSolo"]]
+collision_layer = 2
+collision_mask = 0
 monitoring = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="GetTakenArea"]
 polygon = PackedVector2Array(-15, 0, 36, -32, 73, -12, 73, 10, 37, 32)
 
 [node name="GrabOtherArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 0
 monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GrabOtherArea"]
 shape = SubResource("CircleShape2D_ef6tc")
 debug_color = Color(0, 0.99, 0.9405, 0)
+
+[node name="WanderTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="Projectile" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 36
+monitoring = false
+monitorable = false
+
+[node name="Collision" type="CollisionPolygon2D" parent="Projectile"]
+polygon = PackedVector2Array(-4, 0, 35, -13, 63, -5, 63, 4, 35, 13)
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("3_dssnc")
@@ -68,9 +86,17 @@ delay_in_seconds = "0.0"
 [node name="Pack" type="Node" parent="StateChart/Root"]
 script = ExtResource("5_40rpd")
 
-[node name="WanderTimer" type="Timer" parent="."]
-autostart = true
+[node name="On Throw" type="Node" parent="StateChart/Root/Pack"]
+script = ExtResource("6_ohcbp")
+to = NodePath("../../Projectile")
+event = &"on_throw"
+delay_in_seconds = "0.0"
 
+[node name="Projectile" type="Node" parent="StateChart/Root"]
+script = ExtResource("5_40rpd")
+
+[connection signal="timeout" from="WanderTimer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="Projectile" to="." method="_on_projectile_body_entered"]
 [connection signal="state_entered" from="StateChart/Root/Solo" to="." method="_on_solo_state_entered"]
 [connection signal="state_exited" from="StateChart/Root/Solo" to="." method="_on_solo_state_exited"]
 [connection signal="state_physics_processing" from="StateChart/Root/Solo" to="." method="_on_solo_state_physics_processing"]
@@ -78,4 +104,5 @@ autostart = true
 [connection signal="state_entered" from="StateChart/Root/Pack" to="." method="_on_pack_state_entered"]
 [connection signal="state_input" from="StateChart/Root/Pack" to="." method="_on_pack_state_input"]
 [connection signal="state_physics_processing" from="StateChart/Root/Pack" to="." method="_on_pack_state_physics_processing"]
-[connection signal="timeout" from="WanderTimer" to="." method="_on_timer_timeout"]
+[connection signal="state_entered" from="StateChart/Root/Projectile" to="." method="_on_projectile_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/Root/Projectile" to="." method="_on_projectile_state_physics_processing"]
