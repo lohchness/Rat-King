@@ -4,7 +4,7 @@ class_name RatPack
 const BasicRat = preload("res://Scenes/BasicRat.tscn")
 @export var RatSkin: Texture
 
-var base_speed = 300
+var base_speed = 600
 var base_accel = 30
 var curr_speed
 var curr_accel
@@ -117,7 +117,8 @@ func _input(event: InputEvent) -> void:
 			add_rat_to_this_pack(bodies[0])
 	
 	if event.is_action_pressed("mouse1"):
-		var dir = get_local_mouse_position()
+		var dir = get_global_mouse_position() - global_position
+		print(dir)
 		current_rotation = rotation
 		target_rotation = 5 * PI * -sign(dir.x)
 		is_rotating = true

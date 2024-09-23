@@ -64,7 +64,7 @@ monitoring = false
 monitorable = false
 
 [node name="Collision" type="CollisionPolygon2D" parent="Projectile"]
-polygon = PackedVector2Array(-4, 0, 35, -13, 63, -5, 63, 4, 35, 13)
+polygon = PackedVector2Array(-13, 0, 37, -22, 68, -7, 68, 8, 35, 22)
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("3_dssnc")
@@ -95,6 +95,12 @@ delay_in_seconds = "0.0"
 [node name="Projectile" type="Node" parent="StateChart/Root"]
 script = ExtResource("5_40rpd")
 
+[node name="Transition" type="Node" parent="StateChart/Root/Projectile"]
+script = ExtResource("6_ohcbp")
+to = NodePath("../../Solo")
+event = &"on_solo"
+delay_in_seconds = "0.0"
+
 [connection signal="timeout" from="WanderTimer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="Projectile" to="." method="_on_projectile_body_entered"]
 [connection signal="state_entered" from="StateChart/Root/Solo" to="." method="_on_solo_state_entered"]
@@ -105,4 +111,5 @@ script = ExtResource("5_40rpd")
 [connection signal="state_input" from="StateChart/Root/Pack" to="." method="_on_pack_state_input"]
 [connection signal="state_physics_processing" from="StateChart/Root/Pack" to="." method="_on_pack_state_physics_processing"]
 [connection signal="state_entered" from="StateChart/Root/Projectile" to="." method="_on_projectile_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/Projectile" to="." method="_on_projectile_state_exited"]
 [connection signal="state_physics_processing" from="StateChart/Root/Projectile" to="." method="_on_projectile_state_physics_processing"]

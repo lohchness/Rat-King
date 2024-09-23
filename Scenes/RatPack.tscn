@@ -29,6 +29,7 @@ color = Color(1, 0, 0.278431, 1)
 polygon = PackedVector2Array(-3, -3, -3, 3, 3, 3, 3, -3)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.655, 0.655)
 
 [connection signal="area_entered" from="GrabOthers" to="." method="_on_grab_others_area_entered"]
 [connection signal="area_exited" from="GrabOthers" to="." method="_on_grab_others_area_exited"]

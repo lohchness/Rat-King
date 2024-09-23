@@ -110,12 +110,13 @@ func pack_update_transform(angle: float, pack_number: int):
 	pass
 
 
-
 #################### PROJECTILE ##############################
 
 
 var projectile_direction
-var projectile_speed = 100
+var projectile_speed = 1000
+var friction = 500
+
 @onready var projectileArea = $Projectile
 
 func projectile_settings(dir: Vector2):
@@ -123,12 +124,23 @@ func projectile_settings(dir: Vector2):
 
 func _on_projectile_state_entered() -> void:
 	projectileArea.monitoring = true
+	projectileArea.monitorable = true
 	print("Entered at position" + str(position))
+	
+	velocity = projectile_direction * projectile_speed
 
 func _on_projectile_state_physics_processing(delta: float) -> void:
-	velocity = projectile_direction * projectile_speed
+	
+	velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+	rotate(10 * delta)
 	move_and_slide()
+	
+	#if velocity.length() > 0.01:
+		#stateChart.send_event("on_solo")
 
 func _on_projectile_body_entered(body: Node2D) -> void:
 	print("Hit something at " + str(position))
 	queue_free()
+
+func _on_projectile_state_exited() -> void:
+	pass # Replace with function body.
