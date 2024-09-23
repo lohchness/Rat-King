@@ -4,7 +4,7 @@ class_name RatPack
 const BasicRat = preload("res://Scenes/BasicRat.tscn")
 @export var RatSkin: Texture
 
-var base_speed = 600
+var base_speed = 300
 var base_accel = 30
 var curr_speed
 var curr_accel
@@ -37,6 +37,7 @@ func _physics_process(delta: float) -> void:
 	var direction = Input.get_vector("left", "right", "up", "down")
 	velocity.x = move_toward(velocity.x, curr_speed * direction.x, curr_accel)
 	velocity.y = move_toward(velocity.y, curr_speed * direction.y, curr_accel)
+	velocity.clamp(Vector2.ZERO, Vector2(600, 600))
 	move_and_slide()
 	
 	## Rotate based on direction
@@ -62,13 +63,10 @@ func add_rat_to_this_pack(body: BasicRat, is_first = false):
 	
 	reparent_nodes(body)
 	update_rat_transforms()
-	
-	print("Pack is at position " + str(global_position))
-	
+
 
 func reparent_nodes(body: BasicRat):
 	body.reparent(ratBodies)
-	#body.add_to_group("PlayerRatCharacterBodies")
 	
 	## COLLISION AND AREAS
 	var collision: CollisionPolygon2D = body.physicsCollider
@@ -79,7 +77,6 @@ func reparent_nodes(body: BasicRat):
 	## This will be put into GrabOthers Area2D to detect other rats to grab.
 	var grab_shape = body.grabOthersCollider
 	grab_shape.reparent(grabOthersAreas)
-	#grab_shape.add_to_group("PlayerRatCharacterBodies")
 
 
 func update_rat_transforms():
@@ -88,7 +85,6 @@ func update_rat_transforms():
 	## 
 	
 	var rat_bodies = ratBodies.get_children() ## Rat Character Bodies and Sprites
-	#var rat_bodies = get_tree().get_nodes_in_group("PlayerRatCharacterBodies")
 	var rat_grab_colliders = grabOthersAreas.get_children() ## Grab Colliders
 	var rat_physics_colliders = get_tree().get_nodes_in_group("PlayerRatCollider") ## Physics Collider
 	
@@ -118,7 +114,6 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("mouse1"):
 		var dir = get_global_mouse_position() - global_position
-		print(dir)
 		current_rotation = rotation
 		target_rotation = 5 * PI * -sign(dir.x)
 		is_rotating = true
@@ -134,8 +129,6 @@ func shoot_rat(direction: Vector2):
 	num_rats -= 1
 	
 	update_rat_transforms()
-	
-	pass
 
 ## Reparent node
 func unpack_rat(direction: Vector2):
@@ -154,16 +147,16 @@ func unpack_rat(direction: Vector2):
 	rat_body.reparent(get_parent()) ## ASSUMES PACK IS A CHILD OF THE SCENE
 	
 	## It is still technically a player, but now a projectile.
-	rat_body.set_collision_layer_value(1, false) ## Not a Player Rat
-	rat_body.set_collision_mask_value(2, false) ## Cannot detect Solo Rats (change?)
+	rat_body.set_collision_layer_value(1, false) ## I am no longer a Player Rat
 	
-	rat_body.set_collision_layer_value(7, true) ## I am a projectile
-	rat_body.set_collision_mask_value(3, true) ## I can detect Enemy Rat Pack
-	rat_body.set_collision_mask_value(6, true) ## I can detect Wall
+	rat_body.set_collision_mask_value(2, false) ## I can no longer detect Solo Rats
+	rat_body.set_collision_mask_value(4, false) # I can no longer detect enemy projectiles
+	
+	rat_body.set_collision_layer_value(7, true) ## I am a Player Projectile
+	
 	
 	rat_body.projectile_settings(direction.normalized())
 	rat_body.stateChart.send_event("on_throw")
-
 
 ########### OTHERS
 
@@ -180,3 +173,10 @@ func _on_grab_others_area_entered(area: Area2D) -> void:
 func _on_grab_others_area_exited(area: Area2D) -> void:
 	if area.is_in_group("EnemyRatSolo"):
 		area.get_parent().call("exited_player_grab_radius")
+
+
+func _on_flee_area_area_entered(area: Area2D) -> void:
+	area.get_parent().call("entered_pack_flee_radius", self)
+
+func _on_flee_area_area_exited(area: Area2D) -> void:
+	area.get_parent().call("exited_pack_flee_radius")

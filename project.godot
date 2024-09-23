@@ -25,6 +25,7 @@ PlayerRat="If the rat is controlled by the player"
 EnemyRatSolo="Solo enemy rat running around"
 PlayerRatCollider="CollisionPolygon of Rats of Player"
 PlayerRatCharacterBodies="CharacterBody2Ds of Basic Rats added to Player Rat Pack"
+nav_walls=""
 
 [input]
 
@@ -64,9 +65,11 @@ mouse1={
 2d_physics/layer_1="PlayerRatPack"
 2d_physics/layer_2="EnemyRatSolo"
 2d_physics/layer_3="EnemyRatPack"
+2d_physics/layer_4="EnemyProjectile"
 2d_physics/layer_5="Ground"
 2d_physics/layer_6="Wall"
-2d_physics/layer_7="Projectile"
+2d_physics/layer_7="PlayerProjectile"
+2d_physics/layer_8="Spawner"
 
 [rendering]
 

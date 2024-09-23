@@ -1,26 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3yb4swaosx4i"]
+[gd_scene load_steps=4 format=3 uid="uid://d3yb4swaosx4i"]
 
 [ext_resource type="Script" path="res://Scripts/ratPack.gd" id="1_quw4d"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ps03p"]
-radius = 426.264
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qqqen"]
+size = Vector2(1148, 635)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_de3t2"]
+radius = 347.001
 
 [node name="Player" type="CharacterBody2D"]
-collision_mask = 34
+collision_mask = 46
 script = ExtResource("1_quw4d")
-
-[node name="FleeArea" type="Area2D" parent="."]
-visible = false
-collision_mask = 2
-monitoring = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FleeArea"]
-shape = SubResource("CircleShape2D_ps03p")
-debug_color = Color(0.887164, 0.330227, 0, 0.0392157)
 
 [node name="BasicRatBodies" type="Node2D" parent="."]
 
 [node name="GrabOthers" type="Area2D" parent="." groups=["PlayerRat"]]
+collision_layer = 0
 collision_mask = 2
 monitorable = false
 
@@ -29,7 +24,27 @@ color = Color(1, 0, 0.278431, 1)
 polygon = PackedVector2Array(-3, -3, -3, 3, 3, 3, 3, -3)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.655, 0.655)
+zoom = Vector2(0.57, 0.57)
+
+[node name="SpawnCheckArea" type="Area2D" parent="." groups=["PlayerRat"]]
+visible = false
+collision_mask = 128
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnCheckArea"]
+position = Vector2(1, 0.5)
+shape = SubResource("RectangleShape2D_qqqen")
+
+[node name="FleeArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FleeArea"]
+shape = SubResource("CircleShape2D_de3t2")
+debug_color = Color(0.887164, 0.330227, 0, 0.0392157)
 
 [connection signal="area_entered" from="GrabOthers" to="." method="_on_grab_others_area_entered"]
 [connection signal="area_exited" from="GrabOthers" to="." method="_on_grab_others_area_exited"]
+[connection signal="area_entered" from="FleeArea" to="." method="_on_flee_area_area_entered"]
+[connection signal="area_exited" from="FleeArea" to="." method="_on_flee_area_area_exited"]

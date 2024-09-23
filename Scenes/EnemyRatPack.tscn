@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://rf767lpkpico"]
+
+[ext_resource type="Script" path="res://enemy_rat_pack.gd" id="1_48hex"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_om0o4"]
+radius = 250.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_26mwb"]
+radius = 500.0
+
+[node name="EnemyRatPack" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 99
+script = ExtResource("1_48hex")
+
+[node name="BasicRatBodies" type="Node2D" parent="."]
+
+[node name="GrabOthers" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+debug_enabled = true
+
+[node name="RecalculatePath" type="Timer" parent="."]
+autostart = true
+
+[node name="DetectionRadius" type="Area2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRadius"]
+shape = SubResource("CircleShape2D_om0o4")
+
+[node name="ChaseRadius" type="Area2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChaseRadius"]
+shape = SubResource("CircleShape2D_26mwb")
+
+[connection signal="timeout" from="RecalculatePath" to="." method="_on_recalculate_path_timeout"]
+[connection signal="body_entered" from="DetectionRadius" to="." method="_on_detection_radius_body_entered"]
+[connection signal="body_exited" from="ChaseRadius" to="." method="_on_chase_radius_body_exited"]

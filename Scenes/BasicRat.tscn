@@ -57,6 +57,9 @@ debug_color = Color(0, 0.99, 0.9405, 0)
 [node name="WanderTimer" type="Timer" parent="."]
 autostart = true
 
+[node name="FleeTimer" type="Timer" parent="."]
+one_shot = true
+
 [node name="Projectile" type="Area2D" parent="."]
 collision_layer = 64
 collision_mask = 36
@@ -95,13 +98,14 @@ delay_in_seconds = "0.0"
 [node name="Projectile" type="Node" parent="StateChart/Root"]
 script = ExtResource("5_40rpd")
 
-[node name="Transition" type="Node" parent="StateChart/Root/Projectile"]
+[node name="On Throw End" type="Node" parent="StateChart/Root/Projectile"]
 script = ExtResource("6_ohcbp")
 to = NodePath("../../Solo")
-event = &"on_solo"
+event = &"on_throw_end"
 delay_in_seconds = "0.0"
 
 [connection signal="timeout" from="WanderTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="FleeTimer" to="." method="_on_flee_timer_timeout"]
 [connection signal="body_entered" from="Projectile" to="." method="_on_projectile_body_entered"]
 [connection signal="state_entered" from="StateChart/Root/Solo" to="." method="_on_solo_state_entered"]
 [connection signal="state_exited" from="StateChart/Root/Solo" to="." method="_on_solo_state_exited"]
