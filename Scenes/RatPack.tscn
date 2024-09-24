@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://d3yb4swaosx4i"]
+[gd_scene load_steps=6 format=3 uid="uid://d3yb4swaosx4i"]
 
 [ext_resource type="Script" path="res://Scripts/ratPack.gd" id="1_quw4d"]
+[ext_resource type="AudioStream" uid="uid://bgthumeweqwb0" path="res://Assets/mouseSFX.mp3" id="2_hclgu"]
+[ext_resource type="AudioStream" uid="uid://lyhcx83aiuq0" path="res://Assets/throwmouse.mp3" id="3_2qe67"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qqqen"]
 size = Vector2(1148, 635)
@@ -24,10 +26,9 @@ color = Color(1, 0, 0.278431, 1)
 polygon = PackedVector2Array(-3, -3, -3, 3, 3, 3, 3, -3)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.57, 0.57)
+zoom = Vector2(0.475, 0.475)
 
 [node name="SpawnCheckArea" type="Area2D" parent="." groups=["PlayerRat"]]
-visible = false
 collision_mask = 128
 monitoring = false
 
@@ -44,7 +45,15 @@ monitorable = false
 shape = SubResource("CircleShape2D_de3t2")
 debug_color = Color(0.887164, 0.330227, 0, 0.0392157)
 
+[node name="SFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_hclgu")
+autoplay = true
+
+[node name="ThrowMouse" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_2qe67")
+
 [connection signal="area_entered" from="GrabOthers" to="." method="_on_grab_others_area_entered"]
 [connection signal="area_exited" from="GrabOthers" to="." method="_on_grab_others_area_exited"]
 [connection signal="area_entered" from="FleeArea" to="." method="_on_flee_area_area_entered"]
 [connection signal="area_exited" from="FleeArea" to="." method="_on_flee_area_area_exited"]
+[connection signal="finished" from="SFX" to="." method="_on_sfx_finished"]

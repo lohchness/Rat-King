@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://ckb5woc2sa0wu"]
+[gd_scene load_steps=6 format=3 uid="uid://ckb5woc2sa0wu"]
 
 [ext_resource type="Texture2D" uid="uid://dd55i4whwx8pe" path="res://Assets/dungeon-asset-pack/dungeon-assets.png" id="1_fuafn"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_ee66i"]
 tile_data = PackedInt32Array(0, 720897, 2, 65536, 720897, 2, 131072, 589825, 6, 196608, 589825, 7, 131073, 917505, 1, 196609, 589825, 7, 131074, 1048577, 1, 196610, 1048577, 2, 131075, 1048577, 1, 196611, 1048577, 2, 131076, 1114113, 1, 196612, 917505, 2, 131077, 655361, 0, 196613, 983041, 2)
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_v8nbf"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lr72f"]
 texture = ExtResource("1_fuafn")
@@ -94,8 +100,11 @@ texture = ExtResource("1_fuafn")
 11:3/0 = 0
 11:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 1, -8, 1, 8, -8, 8)
 13:3/0 = 0
+13:3/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_v8nbf")
 14:3/0 = 0
+14:3/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_v8nbf")
 15:3/0 = 0
+15:3/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_v8nbf")
 18:3/0 = 0
 19:3/0 = 0
 20:3/0 = 0
@@ -116,8 +125,11 @@ texture = ExtResource("1_fuafn")
 11:4/0 = 0
 11:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 1, -8, 1, 8, -8, 8)
 13:4/0 = 0
+13:4/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_v8nbf")
 14:4/0 = 0
+14:4/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_v8nbf")
 15:4/0 = 0
+15:4/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_v8nbf")
 17:4/0 = 0
 18:4/0 = 0
 19:4/0 = 0

@@ -143,11 +143,26 @@ func pack_update_transform(angle: float, pack_number: int):
 var projectile_direction
 var projectile_speed = 1000
 var friction = 500
+var enemy_proj = false
 
 @onready var projectileArea = $Projectile
 
-func projectile_settings(dir: Vector2):
+func projectile_settings(dir: Vector2, is_enemy = false):
 	projectile_direction = dir
+	
+	if is_enemy:
+		add_to_group("EnemyRatProjectile")
+		projectileArea.set_collision_layer_value(7, false)## Not player projectile
+		projectileArea.set_collision_layer_value(4, true)## IS enemy projectile
+		projectileArea.set_collision_layer_value(1, false)
+		
+		projectileArea.set_collision_mask_value(3, false)## Not looking for Enemy rat pack
+		projectileArea.set_collision_mask_value(1, true) ## Is looking for Player rat pack
+		
+		set_collision_layer_value(2, false)
+		set_collision_layer_value(4, true)
+		set_collision_layer_value(1, false)
+		set_collision_mask_value(1, true)
 
 func _on_projectile_state_entered() -> void:
 	projectileArea.monitoring = true
@@ -167,6 +182,9 @@ func _on_projectile_state_physics_processing(delta: float) -> void:
 func _on_projectile_body_entered(body: Node2D) -> void:
 	print("Hit something at " + str(position))
 	queue_free()
+	
+	if body.has_method("damage"):
+		body.damage()
 
 func _on_projectile_state_exited() -> void:
 	var t = ratScene.instantiate()

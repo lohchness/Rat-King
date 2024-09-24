@@ -33,6 +33,10 @@ func _ready() -> void:
 	call_deferred("add_rat_to_this_pack", firstrat, true)
 
 func _physics_process(delta: float) -> void:
+	
+	if num_rats == 0:
+		get_tree().change_scene_to_file("res://Scenes/Gameover.tscn")
+	
 	## Movement
 	var direction = Input.get_vector("left", "right", "up", "down")
 	velocity.x = move_toward(velocity.x, curr_speed * direction.x, curr_accel)
@@ -80,6 +84,10 @@ func reparent_nodes(body: BasicRat):
 
 
 func update_rat_transforms():
+	
+	curr_speed = base_speed + 50 * num_rats 
+	curr_accel = min(10, base_accel - num_rats)
+	
 	## BasicRatBodies   CharacterBody2D and Sprites
 	## GrabOthers       CollisionPolygon2Ds
 	## 
@@ -119,6 +127,7 @@ func _input(event: InputEvent) -> void:
 		is_rotating = true
 		
 		shoot_rat(dir)
+		$ThrowMouse.play()
 
 
 func shoot_rat(direction: Vector2):
@@ -180,3 +189,26 @@ func _on_flee_area_area_entered(area: Area2D) -> void:
 
 func _on_flee_area_area_exited(area: Area2D) -> void:
 	area.get_parent().call("exited_pack_flee_radius")
+
+func damage():
+	var rat_bodies = ratBodies.get_children()
+	var i = randi_range(0, len(rat_bodies) - 1)
+	var rat_body: CollisionObject2D = rat_bodies[i]
+	
+	var rat_grab_collider = grabOthersAreas.get_child(i) ## Grab Colliders
+	var rat_physics_collider = get_tree().get_nodes_in_group("PlayerRatCollider")[i] ## Physics Collider
+	
+	rat_physics_collider.reparent(rat_body)
+	rat_grab_collider.reparent(rat_body.grabOthersArea)
+	rat_body.reparent(get_parent())
+	
+	rat_body.queue_free()
+	num_rats -= 1
+	
+	update_rat_transforms()
+	
+
+
+func _on_sfx_finished() -> void:
+	$SFX.play()
+	pass # Replace with function body.
